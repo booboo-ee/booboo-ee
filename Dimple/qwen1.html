@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine Animation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #ffdddd; /* Light pink background */
+      overflow: hidden;
+      position: relative;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      z-index: 1;
+    }
+
+    .message {
+      font-size: 2.5rem;
+      color: #ff4d6a; /* Soft red */
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .emoji {
+      font-size: 3rem;
+      color: #ff4d6a;
+    }
+
+    .options {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      padding: 10px 20px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease, font-size 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .yes {
+      background-color: #ff4d6a; /* Soft red */
+      color: white;
+    }
+
+    .no {
+      background-color: #ff99b3; /* Light pink */
+      color: white;
+    }
+
+    .background-gif {
+      width: 400px;
+      height: auto;
+      margin-top: 20px;
+      animation: float 3s infinite alternate;
+    }
+
+    .confetti-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      display: none;
+      z-index: 2;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4d6a; /* Soft red */
+      top: -20px;
+      animation: fall linear infinite;
+      clip-path: path('M10 0 C20 0 20 20 10 20 C0 20 0 0 10 0 Z'); /* Heart shape */
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .popup-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: auto;
+      display: none;
+      z-index: 3;
+      text-align: center;
+    }
+
+    .popup-image {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .popup-text {
+      font-size: 1.5rem;
+      color: #ff4d6a; /* Soft red */
+      margin-top: 10px;
+      font-weight: bold;
+      animation: fadeIn 3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Top-Centered Question -->
+    <div class="message">CAN YOU BE MY VALENTINE BABY? 🌹 ❤️</div>
+
+    <!-- Buttons Side by Side -->
+    <div class="options">
+      <button class="option yes">YES</button>
+      <button class="option no">NO</button>
+    </div>
+
+    <!-- Background GIF -->
+    <img src="background.gif" alt="Background GIF" class="background-gif"> <!-- Replace with your GIF -->
+  </div>
+
+  <!-- Confetti Animation -->
+  <div class="confetti-container"></div>
+
+  <!-- Popup Container -->
+  <div class="popup-container">
+    <img src="popup.jpg" alt="Popup Image" class="popup-image"> <!-- Replace with your popup image -->
+    <div class="popup-text">KNEW YOU WOULD SAY YES, BITCH 😎 👶</div>
+  </div>
+
+  <script>
+    const yesButton = document.querySelector('.yes');
+    const noButton = document.querySelector('.no');
+    const message = document.querySelector('.message');
+    const options = document.querySelector('.options');
+    const confettiContainer = document.querySelector('.confetti-container');
+    const popupContainer = document.querySelector('.popup-container');
+    const backgroundGif = document.querySelector('.background-gif');
+
+    let noClickCount = 0;
+
+    // Function to create confetti pieces
+    function createConfetti() {
+      for (let i = 0; i < 150; i++) {
+        const confettiPiece = document.createElement('div');
+        confettiPiece.classList.add('confetti-piece');
+        confettiPiece.style.left = `${Math.random() * 100}vw`;
+        confettiPiece.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        confettiPiece.style.backgroundColor = ['#ff4d6a', '#ff99b3', '#ffb3cc'][Math.floor(Math.random() * 3)];
+        confettiContainer.appendChild(confettiPiece);
+
+        // Remove confetti after animation ends
+        setTimeout(() => {
+          confettiPiece.remove();
+        }, 5000);
+      }
+    }
+
+    function showFinalAnimation() {
+      // Hide the question, buttons, and background GIF
+      message.style.display = 'none';
+      options.style.display = 'none';
+      backgroundGif.style.display = 'none';
+
+      // Show confetti animation
+      confettiContainer.style.display = 'block';
+      createConfetti();
+
+      // Show the popup container
+      popupContainer.style.display = 'block';
+    }
+
+    yesButton.addEventListener('click', () => {
+      showFinalAnimation();
+    });
+
+    noButton.addEventListener('click', () => {
+      noClickCount++;
+      if (noClickCount === 1) {
+        noButton.textContent = 'ARE YOU SURE?';
+        yesButton.style.fontSize = '2rem';
+      } else if (noClickCount === 2) {
+        noButton.textContent = 'PLEASE BABY...I WILL BE VERY VERY VERY SAD 😢';
+        yesButton.style.fontSize = '3rem';
+      } else {
+        showFinalAnimation();
+      }
+    });
+  </script>
+</body>
+</html>
